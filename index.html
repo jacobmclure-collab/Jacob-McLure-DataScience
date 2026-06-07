@@ -1,1 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jacob McLure | Sports Data & Analytics</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Sora:wght@300;400;500;600;700;800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-dark: #0a0a0f;
+  --surface: #111118;
+  --surface2: #1a1a26;
+  --border: #2a2a3a;
+  --text-light: #e8e8ef;
+  --text-dim: #8888a0;
+  --accent: #4a9eff;
+  --accent2: #7c5cfc;
+  --accent3: #00d4aa;
+  --bg-warm: #faf8f4;
+  --bg-warm2: #f3efe8;
+  --text-dark: #1a1a2e;
+  --text-warm: #4a4a5a;
+  --warm-accent: #c4956a;
+  --font-display: 'Sora', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --font-serif: 'Libre Baskerville', serif;
+}
 
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-display);
+  color: var(--text-light);
+  line-height: 1.6;
+  overflow-x: hidden;
+  background: var(--bg-dark);
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  padding: 18px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  backdrop-filter: blur(24px);
+  background: rgba(10,10,15,0.85);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.4s;
+}
+
+nav .logo {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 2px;
+}
+
+nav .links { display: flex; gap: 28px; }
+
+nav .links a {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+
+nav .links a:hover { color: var(--accent); }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(1deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============ HERO (DARK) ============ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 120px 60px 80px;
+  background: var(--bg-dark);
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    linear-gradient(rgba(74,158,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(74,158,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+.hero-content { max-width: 780px; position: relative; z-index: 2; }
+
+.hero-label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.2s;
+}
+
+.hero h1 {
+  font-size: clamp(38px, 5.5vw, 68px);
+  font-weight: 800;
+  line-height: 1.05;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.4s;
+}
+
+.hero h1 .gradient {
+  background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-desc {
+  font-size: 17px;
+  color: var(--text-dim);
+  max-width: 580px;
+  line-height: 1.75;
+  margin-bottom: 44px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.6s;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 44px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.8s;
+}
+
+.hero-stat .number {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.hero-stat .label {
+  font-size: 11px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+.glow {
+  position: absolute;
+  top: 15%;
+  right: 5%;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(74,158,255,0.1) 0%, rgba(124,92,252,0.05) 40%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: float 10s ease-in-out infinite;
+}
+
+.glow-2 {
+  position: absolute;
+  bottom: 10%;
+  left: 10%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(0,212,170,0.06) 0%, transparent 60%);
+  border-radius: 50%;
+  filter: blur(60px);
+  animation: float 12s ease-in-out infinite reverse;
+}
+
+/* ============ ABOUT ME (WARM) ============ */
+.about-section {
+  background: var(--bg-warm);
+  padding: 100px 60px;
+  position: relative;
+}
+
+.about-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 120px;
+  background: linear-gradient(to bottom, var(--bg-dark), var(--bg-warm));
+  pointer-events: none;
+}
+
+.about-inner {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.about-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--warm-accent);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.about-section h2 {
+  font-family: var(--font-serif);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 28px;
+  line-height: 1.3;
+}
+
+.about-text {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--text-warm);
+  margin-bottom: 20px;
+}
+
+.about-text em {
+  color: var(--text-dark);
+  font-style: italic;
+}
+
+.about-details {
+  display: flex;
+  gap: 40px;
+  margin-top: 36px;
+  flex-wrap: wrap;
+}
+
+.about-detail {
+  flex: 1;
+  min-width: 200px;
+  padding: 20px 24px;
+  background: var(--bg-warm2);
+  border-radius: 10px;
+  border-left: 3px solid var(--warm-accent);
+}
+
+.about-detail h4 {
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--warm-accent);
+  margin-bottom: 8px;
+}
+
+.about-detail p {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  color: var(--text-warm);
+  line-height: 1.6;
+}
+
+/* ============ TRANSITION WARM -> DARK ============ */
+.transition-down {
+  height: 120px;
+  background: linear-gradient(to bottom, var(--bg-warm), var(--bg-dark));
+}
+
+/* ============ DARK SECTIONS ============ */
+.dark-section {
+  background: var(--bg-dark);
+  padding: 100px 60px;
+  position: relative;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-size: 34px;
+  font-weight: 700;
+  margin-bottom: 48px;
+  color: var(--text-light);
+}
+
+/* SKILLS */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.skill-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 26px;
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.skill-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+}
+
+.skill-card h3 {
+  font-size: 12px;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.skill-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+
+.skill-tag {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 5px 11px;
+  font-size: 12px;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  transition: border-color 0.3s, color 0.3s;
+}
+
+.skill-card:hover .skill-tag {
+  border-color: rgba(74,158,255,0.2);
+  color: var(--text-light);
+}
+
+/* PROJECTS */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 24px;
+}
+
+.project-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 32px;
+  transition: border-color 0.4s, transform 0.3s, box-shadow 0.4s;
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.project-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(74,158,255,0.08);
+}
+
+.project-card:hover::before { opacity: 1; }
+
+.project-card .lang {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent3);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.project-card h3 {
+  font-size: 19px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  line-height: 1.3;
+}
+
+.project-card p {
+  font-size: 13.5px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+
+.project-methods { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+
+.method-tag {
+  background: rgba(74,158,255,0.07);
+  border: 1px solid rgba(74,158,255,0.18);
+  border-radius: 4px;
+  padding: 3px 9px;
+  font-size: 10.5px;
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+
+.project-link {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent3);
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: color 0.3s;
+  border-bottom: 1px solid transparent;
+}
+
+.project-link:hover {
+  color: var(--text-light);
+  border-bottom-color: var(--accent3);
+}
+
+/* EXPERIENCE */
+.exp-timeline { max-width: 780px; }
+
+.exp-item {
+  padding: 28px 0;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 28px;
+}
+
+.exp-item:last-child { border-bottom: none; }
+
+.exp-meta .company { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+
+.exp-meta .dates {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.exp-body .role {
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.exp-body p {
+  font-size: 13.5px;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+
+/* EDUCATION */
+.edu-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 36px;
+  max-width: 680px;
+}
+
+.edu-card h3 { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+
+.edu-card .degree { font-size: 15px; color: var(--accent); margin-bottom: 6px; }
+
+.edu-card .note { font-size: 13px; color: var(--text-dim); margin-bottom: 16px; }
+
+.coursework { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.course-tag {
+  background: rgba(0,212,170,0.07);
+  border: 1px solid rgba(0,212,170,0.18);
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 13px;
+  color: var(--accent3);
+}
+
+.course-tag .grade {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  margin-left: 6px;
+  opacity: 0.7;
+}
+
+/* CONTACT */
+.contact-section {
+  background: var(--bg-dark);
+  text-align: center;
+  padding: 120px 60px;
+}
+
+.contact-section h2 {
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.contact-section p {
+  color: var(--text-dim);
+  font-size: 15px;
+  margin-bottom: 36px;
+}
+
+.contact-links { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
+
+.contact-link {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent);
+  text-decoration: none;
+  padding: 12px 26px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.contact-link:hover { background: var(--accent); color: var(--bg-dark); }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  nav { padding: 14px 20px; }
+  nav .links { gap: 14px; }
+  nav .links a { font-size: 10px; }
+  .hero { padding: 100px 24px 60px; }
+  .about-section, .dark-section { padding: 60px 24px; }
+  .hero-stats { gap: 20px; }
+  .exp-item { grid-template-columns: 1fr; gap: 6px; }
+  .glow, .glow-2 { display: none; }
+  .about-details { gap: 16px; }
+  .contact-section { padding: 80px 24px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">JACOB McLURE</div>
+  <div class="links">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#experience">Experience</a>
+    <a href="#education">Education</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="glow"></div>
+  <div class="glow-2"></div>
+  <div class="hero-content">
+    <div class="hero-label">Sports Data & Analytics</div>
+    <h1>Turning sports data into <span class="gradient">decisions that matter.</span></h1>
+    <p class="hero-desc">UC Berkeley Economics graduate. I build predictive models, design data pipelines, and translate complex analytics into insights that drive real decisions. Fluent in Python, R, SQL, and Tableau.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="number">3.94</div><div class="label">GPA, UC Berkeley</div></div>
+      <div class="hero-stat"><div class="number">1,913</div><div class="label">Player-Seasons Analyzed</div></div>
+      <div class="hero-stat"><div class="number">10</div><div class="label">Markets, Adidas GTM</div></div>
+      <div class="hero-stat"><div class="number">150M+</div><div class="label">Views, NCP Analytics</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ME (WARM) ============ -->
+<section class="about-section" id="about">
+  <div class="about-inner reveal">
+    <div class="about-label">// About Me</div>
+    <h2>I care about sports deeply enough that I built a career around understanding them with data.</h2>
+    <p class="about-text">I'm Jacob. I grew up in Southern California loving Philadelphia sports from a distance, transferred from UC Santa Cruz to UC Berkeley because I wasn't willing to settle, and graduated with a 3.94 GPA as a first-generation college student. I write <em>poetry at 1 AM</em> and build <em>regression models during the day</em>. I founded a sports media brand that reached 150 million views because I couldn't stop thinking about how stories reach people. Now I want to be in the rooms where data shapes how teams compete, how fans engage, and how organizations make the decisions that define seasons.</p>
+    <p class="about-text">Every project on this site exists because I chose to build it. Not for a grade, not for a boss, but because I had a question about sports and I wanted to find the answer in the data.</p>
+
+    <div class="about-details">
+      <div class="about-detail">
+        <h4>Background</h4>
+        <p>UC Berkeley Economics, 3.94 GPA. First-gen. Transferred from UCSC. Coursework in Econometrics, Probability & Statistics, and Data Science.</p>
+      </div>
+      <div class="about-detail">
+        <h4>What I Do</h4>
+        <p>Statistical modeling, data pipelines, Monte Carlo simulation, regression analysis, and translating complex findings into clear stories for decision-makers.</p>
+      </div>
+      <div class="about-detail">
+        <h4>Beyond the Data</h4>
+        <p>Poet (UC Berkeley art exhibit, 2024). Sports media founder (100K+ followers). Podcast host. Lifelong basketball and baseball obsessive.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="transition-down"></div>
+
+<!-- ============ SKILLS ============ -->
+<section class="dark-section" id="skills">
+  <div class="section-label reveal">// Technical Stack</div>
+  <h2 class="section-title reveal">Tools & Methods</h2>
+  <div class="skills-grid">
+    <div class="skill-card reveal"><h3>Languages</h3><div class="skill-tags"><span class="skill-tag">Python</span><span class="skill-tag">R</span><span class="skill-tag">SQL</span><span class="skill-tag">pandas</span><span class="skill-tag">NumPy</span><span class="skill-tag">SciPy</span><span class="skill-tag">matplotlib</span><span class="skill-tag">scikit-learn</span><span class="skill-tag">tidyverse</span><span class="skill-tag">ggplot2</span></div></div>
+    <div class="skill-card reveal"><h3>Visualization & BI</h3><div class="skill-tags"><span class="skill-tag">Tableau</span><span class="skill-tag">Excel (Advanced)</span><span class="skill-tag">Google Analytics</span><span class="skill-tag">Adobe Analytics</span><span class="skill-tag">PowerPoint</span></div></div>
+    <div class="skill-card reveal"><h3>Machine Learning</h3><div class="skill-tags"><span class="skill-tag">Regression</span><span class="skill-tag">Classification</span><span class="skill-tag">Clustering</span><span class="skill-tag">Predictive Modeling</span><span class="skill-tag">Model Evaluation</span><span class="skill-tag">Feature Engineering</span></div></div>
+    <div class="skill-card reveal"><h3>Statistical Methods</h3><div class="skill-tags"><span class="skill-tag">OLS / IV Regression</span><span class="skill-tag">Monte Carlo</span><span class="skill-tag">ANOVA</span><span class="skill-tag">A/B Testing</span><span class="skill-tag">Scenario Modeling</span><span class="skill-tag">Data Pipelines</span></div></div>
+  </div>
+</section>
+
+<!-- ============ PROJECTS ============ -->
+<section class="dark-section" id="projects">
+  <div class="section-label reveal">// Analytics Projects</div>
+  <h2 class="section-title reveal">Sports Research</h2>
+  <div class="projects-grid">
+
+    <div class="project-card reveal">
+      <div class="lang">Python</div>
+      <h3>NBA Positional Impact Analysis</h3>
+      <p>Built an end-to-end data pipeline analyzing 1,913 NBA player-seasons of on/off net-rating data to quantify which position most influences team outcomes. Applied formal statistical testing (ANOVA, Kruskal-Wallis, Levene's test) and cross-validated against regularized RAPM, uncovering a measurement artifact in raw on/off splits that only surfaced after applying the cross-check. When the primary API failed mid-project, I re-architected the entire data layer around an alternative dataset, validating it against the same conceptual measure to preserve methodological rigor over expedience.</p>
+      <div class="project-methods"><span class="method-tag">pandas</span><span class="method-tag">NumPy</span><span class="method-tag">SciPy</span><span class="method-tag">ANOVA</span><span class="method-tag">Kruskal-Wallis</span><span class="method-tag">RAPM</span><span class="method-tag">Data Pipeline</span></div>
+      <a href="#" class="project-link">↓ Download Full Research PDF</a>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="lang">R</div>
+      <h3>NBA Salary Econometric Study</h3>
+      <p>Investigated wage determinants for NBA players using the Wooldridge nbasal dataset, running OLS regressions on log-wage against player position with controls for age, experience, points, games played, and demographics. Tested for omitted variable bias across multiple specifications via auxiliary regressions, then implemented 2SLS instrumental-variable regression using draft position as an instrument. Diagnosed instrument validity using Wu-Hausman and weak-instrument tests, correctly identifying that a 466% IV coefficient signaled exclusion-restriction violations rather than a true effect.</p>
+      <div class="project-methods"><span class="method-tag">OLS</span><span class="method-tag">2SLS IV</span><span class="method-tag">Wu-Hausman</span><span class="method-tag">Causal Inference</span><span class="method-tag">Econometrics</span></div>
+      <a href="#" class="project-link">↓ Download Full Research PDF</a>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="lang">R / Python</div>
+      <h3>Baseball Operations Research — Phillies</h3>
+      <p>Completed the Philadelphia Phillies' Baseball Operations Org Intern Questionnaire. Analyzed qualifying-offer decisions for Schwarber (4.9 fWAR, 150 OPS+, 56 HR) and Suárez (53 starts, 3.33 ERA) incorporating CBT rules, projected AAV, and draft-pick compensation. Modeled expected value using three independent methods (numerical integration, analytical calculation, Monte Carlo simulation), cross-validating all three to within 0.1%. Built a lineup-construction simulation in R using wOBA-to-runs conversion across 2,000 PA per configuration with a playoff-environment wOBA penalty.</p>
+      <div class="project-methods"><span class="method-tag">Monte Carlo</span><span class="method-tag">Feature Engineering</span><span class="method-tag">wOBA</span><span class="method-tag">Statcast</span><span class="method-tag">CBT Analysis</span><span class="method-tag">Simulation</span></div>
+      <a href="#" class="project-link">↓ Download Full Research PDF</a>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="lang">SQL / Python / Tableau</div>
+      <h3>Economic Data Storytelling</h3>
+      <p>Analyzed the economic effects of immigration on regional US GDP using SQL and Python (pandas) to extract, clean, and structure large datasets from multiple sources. Built interactive Tableau dashboards for data-driven storytelling and presented findings in a concise PowerPoint deck designed for non-technical stakeholders. Demonstrated end-to-end data workflow from raw data to executive-ready presentation.</p>
+      <div class="project-methods"><span class="method-tag">SQL</span><span class="method-tag">pandas</span><span class="method-tag">Tableau</span><span class="method-tag">Data Storytelling</span><span class="method-tag">ETL</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ EXPERIENCE ============ -->
+<section class="dark-section" id="experience">
+  <div class="section-label reveal">// Professional Experience</div>
+  <h2 class="section-title reveal">Where I've Applied It</h2>
+  <div class="exp-timeline">
+    <div class="exp-item reveal">
+      <div class="exp-meta"><div class="company">Adidas</div><div class="dates">Sep — Dec 2024</div></div>
+      <div class="exp-body"><div class="role">Go-to-Market Project Consultant — Fear of God Athletics</div><p>Analyzed 800+ consumer surveys and D1 athlete interviews across 10 markets. Built Tableau dashboards to visualize consumer segmentation. Synthesized quantitative and qualitative research into strategic recommendations presented to cross-functional stakeholders in Product Marketing, Design, and Consumer Insights.</p></div>
+    </div>
+    <div class="exp-item reveal">
+      <div class="exp-meta"><div class="company">The Players' Tribune</div><div class="dates">Sep — Dec 2023</div></div>
+      <div class="exp-body"><div class="role">Marketing Analyst Intern</div><p>Built Excel dashboards analyzing multi-platform performance data. Conducted competitive analysis using SurveyMonkey and SimilarWeb, identifying 3 untapped audience segments. Presented data-driven strategic deliverables to the marketing team that reshaped the company's roadmap.</p></div>
+    </div>
+    <div class="exp-item reveal">
+      <div class="exp-meta"><div class="company">NoContextPhilly</div><div class="dates">Sep 2021 — Present</div></div>
+      <div class="exp-body"><div class="role">Founder — Digital Business & Analytics</div><p>Built a digital sports media business to 100,000+ users and 150M+ impressions. Perform ad-hoc analysis and scenario modeling daily using Google Analytics. Manage partnership revenue analytics end to end: data extraction, KPI tracking, and ROI reporting across multiple platforms.</p></div>
+    </div>
+    <div class="exp-item reveal">
+      <div class="exp-meta"><div class="company">Fifth Commandment</div><div class="dates">Jun — Sep 2022</div></div>
+      <div class="exp-body"><div class="role">Financial Planning Intern</div><p>Built predictive cash-flow models and variance dashboards in Excel. Extracted and preprocessed recruitment data using SQL and Python (Pandas) to generate insights that reduced hiring costs by 15%.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EDUCATION ============ -->
+<section class="dark-section" id="education">
+  <div class="section-label reveal">// Education</div>
+  <h2 class="section-title reveal">Foundation</h2>
+  <div class="edu-card reveal">
+    <h3>University of California, Berkeley</h3>
+    <div class="degree">B.A. Economics — GPA: 3.94 — Class of 2025</div>
+    <div class="note">First-generation college graduate. Transferred from UC Santa Cruz.</div>
+    <div class="coursework">
+      <span class="course-tag">Econometrics<span class="grade">A</span></span>
+      <span class="course-tag">Probability & Statistics<span class="grade">A+</span></span>
+      <span class="course-tag">Data Science (SQL, Python, R)<span class="grade">A</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="contact-section" id="contact">
+  <h2 class="reveal">Let's <span style="background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">connect.</span></h2>
+  <p class="reveal">Open to roles in sports analytics, business intelligence, and data science.</p>
+  <div class="contact-links reveal">
+    <a href="mailto:jacobmclure@berkeley.edu" class="contact-link">jacobmclure@berkeley.edu</a>
+    <a href="https://www.linkedin.com/in/jacobmclure" class="contact-link" target="_blank">LinkedIn</a>
+    <a href="tel:+13106143893" class="contact-link">(310) 614-3893</a>
+  </div>
+</section>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
